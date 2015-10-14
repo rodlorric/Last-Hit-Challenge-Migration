@@ -135,7 +135,7 @@ def clear_records():
     #conn = pymongo.MongoClient()
     #db = conn.lasthitchallengedb
 
-    db.records..remove({})
+    db.records.remove({})
     return jsonify({'data' : 'ok'})
 
 
