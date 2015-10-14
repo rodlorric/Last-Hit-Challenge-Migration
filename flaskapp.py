@@ -128,7 +128,7 @@ def get_leaders():
     return jsonify({'data' : data})
 
 @app.route('/clear', methods = ['GET'])
-def get_leaders():
+def clear_records():
     print 'CLEAR'
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
