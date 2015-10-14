@@ -127,6 +127,17 @@ def get_leaders():
     data = {'steam_id' : steam_id, 'api_key' : api_key, 'data' : table}
     return jsonify({'data' : data})
 
+@app.route('/clear', methods = ['GET'])
+def get_leaders():
+    print 'CLEAR'
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+    #conn = pymongo.MongoClient()
+    #db = conn.lasthitchallengedb
+
+    db.records..remove({})
+    return jsonify({'data' : 'ok'})
+
 
 @app.route('/records', methods = ['POST'])
 def add_records():
