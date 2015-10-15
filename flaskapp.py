@@ -102,6 +102,24 @@ def get_records():
     #Now turn the results into valid JSON
     #return str(json.dumps({'data':list(result)},default=json_util.default))
 
+@app.route('/allrecords', methods = ['GET'])
+def get_records():
+    print 'ALL RECORDS'
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+    #conn = pymongo.MongoClient()
+    #db = conn.lasthitchallengedb
+
+    steam_id_records = []
+    #query the DB for all the parkpoints
+    result = db.records.find()
+    for rec in result:
+        steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+
+    data = {"data" : steam_id_records}
+
+    return jsonify({'data' : data})
+
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
     print 'LEADERBOARD'
