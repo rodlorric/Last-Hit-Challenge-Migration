@@ -103,7 +103,7 @@ def get_records():
     #return str(json.dumps({'data':list(result)},default=json_util.default))
 
 @app.route('/allrecords', methods = ['GET'])
-def get_records():
+def all_records():
     print 'ALL RECORDS'
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
