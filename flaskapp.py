@@ -107,8 +107,8 @@ def all_records():
     print 'ALL RECORDS'
     key = request.args.get('key')
 
-    if (key == '17354443'):
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    if key == '17354443':
+    	conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
@@ -121,8 +121,9 @@ def all_records():
 
         data = {"data" : steam_id_records}
         return jsonify({'data' : data})
-   	else:
-        return jsonify({'data' : 'nothing for you!'})
+    	#return 'shit'
+    else:
+    	return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
@@ -135,10 +136,10 @@ def get_leaders():
     leveling = request.args.get('leveling')
     typescore = request.args.get('typescore')
 
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
+    #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    #db = conn[os.environ['OPENSHIFT_APP_NAME']]
+    conn = pymongo.MongoClient()
+    db = conn.lasthitchallengedb
 
     table = []
     result = db.records.find({'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore}).sort('value', -1).limit(100)
@@ -154,17 +155,29 @@ def clear_records():
     print 'CLEAR'
     key = request.args.get('key')
 
-    if (key == '17354443'):
-	    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-	    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-	    #conn = pymongo.MongoClient()
-	    #db = conn.lasthitchallengedb
+    if key == '17354443':
+    	conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
 
-	    db.records.remove({})
-    	return jsonify({'data' : 'ok'})
+        db.records.remove({})
+
+        return jsonify({'data' : 'data cleared'})
     else:
-    	return jsonify({'data' : 'nothing for you!'})
+    	return jsonify({'data' : 'nothing to see here'})
 
+    #if key == '17354443':
+#    #	#conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#    #	#db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#    #	conn = pymongo.MongoClient()
+#    #	db = conn.lasthitchallengedb
+#
+#    #	db.records.remove({})
+#
+	#	return jsonify({'data' : 'ok'})
+    #else:
+    #	return jsonify({'data' : 'nothing for you!'})
 
 @app.route('/records', methods = ['POST'])
 def add_records():
@@ -187,10 +200,10 @@ def add_records():
         data = json.loads(result.get('data'))
         new_records = []
 
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        conn = pymongo.MongoClient()
+        db = conn.lasthitchallengedb
+        #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        #db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
         for elem in data:
             rec = db.records.find_one({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore']})
