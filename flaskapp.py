@@ -121,9 +121,8 @@ def all_records():
 
         data = {"data" : steam_id_records}
         return jsonify({'data' : data})
-    } else {
+   	else:
         return jsonify({'data' : 'nothing for you!'})
-    }
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
@@ -163,9 +162,8 @@ def clear_records():
 
 	    db.records.remove({})
     	return jsonify({'data' : 'ok'})
-    } else {
-        return jsonify({'data' : 'nothing for you!'})
-    }
+    else
+    	return jsonify({'data' : 'nothing for you!'})
 
 
 @app.route('/records', methods = ['POST'])
