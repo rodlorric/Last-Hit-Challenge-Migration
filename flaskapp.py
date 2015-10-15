@@ -105,20 +105,25 @@ def get_records():
 @app.route('/allrecords', methods = ['GET'])
 def all_records():
     print 'ALL RECORDS'
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
+    key = request.args.get('key')
 
-    steam_id_records = []
-    #query the DB for all the parkpoints
-    result = db.records.find()
-    for rec in result:
-        steam_id_records.append({'steam_id' : rec['steam_id'], 'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+    if key == '17354443' {
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
 
-    data = {"data" : steam_id_records}
+        steam_id_records = []
+        #query the DB for all the parkpoints
+        result = db.records.find()
+        for rec in result:
+            steam_id_records.append({'steam_id' : rec['steam_id'], 'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
 
-    return jsonify({'data' : data})
+        data = {"data" : steam_id_records}
+        return jsonify({'data' : data})
+    } else {
+        return jsonify({'data' : 'nothing for you!'})
+    }
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
@@ -148,13 +153,19 @@ def get_leaders():
 @app.route('/clear', methods = ['GET'])
 def clear_records():
     print 'CLEAR'
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
+    key = request.args.get('key')
 
-    db.records.remove({})
-    return jsonify({'data' : 'ok'})
+    if key == '17354443' {
+	    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+	    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+	    #conn = pymongo.MongoClient()
+	    #db = conn.lasthitchallengedb
+
+	    db.records.remove({})
+    	return jsonify({'data' : 'ok'})
+    } else {
+        return jsonify({'data' : 'nothing for you!'})
+    }
 
 
 @app.route('/records', methods = ['POST'])
