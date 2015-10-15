@@ -114,7 +114,7 @@ def all_records():
     #query the DB for all the parkpoints
     result = db.records.find()
     for rec in result:
-        steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+        steam_id_records.append({'steam_id' : rec['steam_id'], 'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
 
     data = {"data" : steam_id_records}
 
