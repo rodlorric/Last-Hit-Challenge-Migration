@@ -107,7 +107,7 @@ def all_records():
     print 'ALL RECORDS'
     key = request.args.get('key')
 
-    if (key == '17354443') {
+    if key == '17354443':
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
@@ -155,7 +155,7 @@ def clear_records():
     print 'CLEAR'
     key = request.args.get('key')
 
-    if (key == '17354443') {
+    if key == '17354443':
 	    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
 	    db = conn[os.environ['OPENSHIFT_APP_NAME']]
 	    #conn = pymongo.MongoClient()
