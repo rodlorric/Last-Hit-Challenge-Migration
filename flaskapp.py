@@ -167,18 +167,6 @@ def clear_records():
     else:
     	return jsonify({'data' : 'nothing to see here'})
 
-    #if key == '17354443':
-#    #	#conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-#    #	#db = conn[os.environ['OPENSHIFT_APP_NAME']]
-#    #	conn = pymongo.MongoClient()
-#    #	db = conn.lasthitchallengedb
-#
-#    #	db.records.remove({})
-#
-	#	return jsonify({'data' : 'ok'})
-    #else:
-    #	return jsonify({'data' : 'nothing for you!'})
-
 @app.route('/records', methods = ['POST'])
 def add_records():
     print 'ADD RECORDS'
