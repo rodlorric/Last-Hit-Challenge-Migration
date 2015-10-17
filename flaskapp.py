@@ -136,10 +136,10 @@ def get_leaders():
     leveling = request.args.get('leveling')
     typescore = request.args.get('typescore')
 
-    #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    #db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    conn = pymongo.MongoClient()
-    db = conn.lasthitchallengedb
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+    #conn = pymongo.MongoClient()
+    #db = conn.lasthitchallengedb
 
     table = []
     result = db.records.find({'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore}).sort('value', -1).limit(100)
@@ -188,10 +188,10 @@ def add_records():
         data = json.loads(result.get('data'))
         new_records = []
 
-        conn = pymongo.MongoClient()
-        db = conn.lasthitchallengedb
-        #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        #db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
         for elem in data:
             rec = db.records.find_one({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore']})
