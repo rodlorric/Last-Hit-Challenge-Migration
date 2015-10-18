@@ -251,7 +251,7 @@ def get_cheaters():
 
 	data = {"data" : steam_id_cheaters}
 
-    return jsonify({'data' : steam_id_cheaters})
+    return jsonify({'data' : data})
 
 if __name__ == '__main__':
     app.run(debug = True)
