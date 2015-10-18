@@ -225,7 +225,7 @@ def add_cheater():
 
         return jsonify({'data' : 'OK'}), 201
 
-@app.route('/delcheaters', methods = ['POST'])
+@app.route('/delcheaters', methods = ['GET'])
 def del_cheater():
     print 'DEL CHEATERS'
     db.cheaters.remove({})
