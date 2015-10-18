@@ -228,6 +228,8 @@ def add_cheater():
 @app.route('/delcheaters', methods = ['GET'])
 def del_cheater():
     print 'DEL CHEATERS'
+    #conn = pymongo.MongoClient()
+    #db = conn.lasthitchallengedb
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
     db.cheaters.remove({})
@@ -236,21 +238,17 @@ def del_cheater():
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
     print 'GET CHEATERS'
-
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
     #conn = pymongo.MongoClient()
     #db = conn.lasthitchallengedb
     steam_id_cheaters = []
+    print(steam_id_cheaters)
     #query the DB for all the parkpoints
     result = db.cheaters.find()
     for rec in result:
-    	print(rec)
         steam_id_cheaters.append({'steam_id' : rec['steam_id']})
-
-	data = {"data" : steam_id_cheaters}
-
-    return jsonify({'data' : data})
+    return jsonify({'data' : {'data' : steam_id_cheaters}})
 
 if __name__ == '__main__':
     app.run(debug = True)
