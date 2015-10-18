@@ -219,30 +219,35 @@ def add_cheater():
         #db = conn.lasthitchallengedb
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        db.cheaters.insert({'steam_id' : steam_id})
+        rec = db.cheaters.find_one({'steam_id' : steam_id})
+        if rec == None:
+        	db.cheaters.insert({'steam_id' : steam_id})
 
         return jsonify({'data' : 'OK'}), 201
+
+@app.route('/delcheaters', methods = ['POST'])
+def del_cheater():
+    print 'DEL CHEATERS'
+    db.cheaters.remove({})
+    return jsonify({'data' : 'data cleared'})
 
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
     print 'GET CHEATERS'
-    key = request.args.get('key')
-    data = {"data" : "nothing to see here"}
 
-    if key == '17354443':
-	    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-	    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-	    #conn = pymongo.MongoClient()
-	    #db = conn.lasthitchallengedb
-	    steam_id_cheaters = []
-	    #query the DB for all the parkpoints
-	    result = db.cheaters.find()
-	    print(result)
-	    for rec in result:
-	    	print(rec)
-	        steam_id_cheaters.append({'steam_id' : rec['steam_id']})
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+    #conn = pymongo.MongoClient()
+    #db = conn.lasthitchallengedb
+    steam_id_cheaters = []
+    #query the DB for all the parkpoints
+    result = db.cheaters.find()
+    print(result)
+    for rec in result:
+    	print(rec)
+        steam_id_cheaters.append({'steam_id' : rec['steam_id']})
 
-	    data = {"data" : steam_id_cheaters}
+	data = {"data" : steam_id_cheaters}
 
     return jsonify({'data' : steam_id_cheaters})
 
