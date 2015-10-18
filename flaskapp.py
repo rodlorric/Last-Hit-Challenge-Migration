@@ -244,7 +244,6 @@ def get_cheaters():
     steam_id_cheaters = []
     #query the DB for all the parkpoints
     result = db.cheaters.find()
-    print(result)
     for rec in result:
     	print(rec)
         steam_id_cheaters.append({'steam_id' : rec['steam_id']})
