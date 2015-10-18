@@ -228,6 +228,8 @@ def add_cheater():
 @app.route('/delcheaters', methods = ['GET'])
 def del_cheater():
     print 'DEL CHEATERS'
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn[os.environ['OPENSHIFT_APP_NAME']]
     db.cheaters.remove({})
     return jsonify({'data' : 'data cleared'})
 
