@@ -70,9 +70,7 @@ def get_records():
     print 'GET RECORDS'
     #get the request parameters
     steam_id = request.args.get('steam_id')
-    api_key = request.args.get('api_key')
-    print('steam_id = ' + str(steam_id))
-    print('api_key = ' + str(api_key))
+    api_key = request.args.get('api_key')    
     #if steam_id != None:
     #    steam_id_records = []
     #    for record in records:
@@ -107,7 +105,7 @@ def all_records():
     key = request.args.get('key')
 
     if key == '17354443':
-    	conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
@@ -120,9 +118,9 @@ def all_records():
 
         data = {"data" : steam_id_records}
         return jsonify({'data' : data})
-    	#return 'shit'
+        #return 'shit'
     else:
-    	return jsonify({'data' : 'nothing to see here'})
+        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
@@ -145,7 +143,6 @@ def get_leaders():
     for rec in result:
         pos = {'steam_id' : rec['steam_id'], 'value' : rec['value']}
         table.append(pos)
-        print ('rec = ' + str(rec))
     data = {'steam_id' : steam_id, 'api_key' : api_key, 'data' : table}
     return jsonify({'data' : data})
 
@@ -155,7 +152,7 @@ def clear_records():
     key = request.args.get('key')
 
     if key == '17354443':
-    	conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
@@ -164,7 +161,7 @@ def clear_records():
 
         return jsonify({'data' : 'data cleared'})
     else:
-    	return jsonify({'data' : 'nothing to see here'})
+        return jsonify({'data' : 'nothing to see here'})
 
 
 @app.route('/records', methods = ['POST'])
@@ -221,19 +218,34 @@ def add_cheater():
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         rec = db.cheaters.find_one({'steam_id' : steam_id})
         if rec == None:
-        	db.cheaters.insert({'steam_id' : steam_id})
+            db.cheaters.insert({'steam_id' : steam_id})
 
         return jsonify({'data' : 'OK'}), 201
 
-@app.route('/delcheaters', methods = ['GET'])
+#@app.route('/delcheaters', methods = ['GET'])
+#def del_cheater():
+#    print 'DEL CHEATERS'
+#    #conn = pymongo.MongoClient()
+#    #db = conn.lasthitchallengedb
+#    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#    db.cheaters.remove({})
+#    return jsonify({'data' : 'data cleared'})
+
+@app.route('/delrecord', methods = ['GET'])
 def del_cheater():
-    print 'DEL CHEATERS'
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    db.cheaters.remove({})
-    return jsonify({'data' : 'data cleared'})
+    print 'DEL RECORDS'
+    steam_id = request.args.get('steam_id')
+    key = request.args.get('key')
+    if key == '17354443':
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        db.records.remove({"steam_id" : steam_id})
+        return jsonify({'data' : 'data cleared'})
+    else:
+        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
@@ -243,7 +255,6 @@ def get_cheaters():
     #conn = pymongo.MongoClient()
     #db = conn.lasthitchallengedb
     steam_id_cheaters = []
-    print(steam_id_cheaters)
     #query the DB for all the parkpoints
     result = db.cheaters.find()
     for rec in result:
