@@ -247,6 +247,22 @@ def del_cheater():
     else:
         return jsonify({'data' : 'nothing to see here'})
 
+@app.route('/swaprecords', methods = ['GET'])
+def swap_records():
+    print 'SWAP RECORDS'
+    hero_from = request.args.get('hero_from')
+    hero_to = request.args.get('hero_to')
+    key = request.args.get('key')
+    if key == '17354443':
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+       	db.recors.update({'hero':int(hero_from)},{$set:{'hero':int(hero_to)}}
+        return jsonify({'data' : 'data swapped'})
+    else:
+        return jsonify({'data' : 'nothing to see here'})
+
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
     print 'GET CHEATERS'
