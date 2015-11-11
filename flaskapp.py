@@ -254,7 +254,7 @@ def swap_records():
     hero_to = request.args.get('hero_to')
     key = request.args.get('key')
     print('hero_from = ' + str(hero_from))
-    print('hero_to' = + str(hero_to))
+    print('hero_to = ' + str(hero_to))
     if key == '17354443':
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
