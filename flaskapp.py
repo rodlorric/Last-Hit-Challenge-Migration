@@ -253,12 +253,14 @@ def swap_records():
     hero_from = request.args.get('hero_from')
     hero_to = request.args.get('hero_to')
     key = request.args.get('key')
+    print('hero_from = ' + str(hero_from))
+    print('hero_to' = + str(hero_to))
     if key == '17354443':
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
-       	db.recors.update({'hero':int(hero_from)},{"$set":{'hero':int(hero_to)}})
+       	db.records.update({'hero':int(hero_from)},{"$set":{'hero':int(hero_to)}})
         return jsonify({'data' : 'data swapped'})
     else:
         return jsonify({'data' : 'nothing to see here'})
