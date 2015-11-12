@@ -195,6 +195,39 @@ def clear_records():
 ##            db.records.insert(new_records)
 ##        return jsonify({'data' : 'OK'}), 201
 
+@app.route('/clearduplicates', methods = ['GET'])
+def clear_duplicates():
+    print 'CLEAR DUPLICATES'
+    key = request.args.get('key')
+
+    if key == '17354443':
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
+
+        heroes = ["102","73","68","1","2","3","65","38","4","62","78","99","61","96","81","66","56","51","5","55","50","43","87","69","49","6","107","7","103","106","58","33","41","72","59","74","91","64","8","90","23","104","52","31","54","25","26","80","48","77","97","94","82","9","10","89","53","36","60","88","84","57","111","76","44","12","110","13","14","45","39","15","32","86","16","105","79","11","27","75","101","28","93","35","67","71","17","18","46","109","29","98","34","19","83","95","100","85","70","20","40","47","92","37","63","21","112","30","42"]
+        time_list = ["150", "300", "450", "600"]
+        type_list = ["c", "l", "d", "a"]
+        level_list = ["l", "n"]
+        res = []
+        for h in heroes:
+        	for t in time_list:
+        		for ty in type_list:
+        			for l in level_list:
+        				result = db.records.find({'hero' : int(h), 'time' : int(t), 'leveling' : l, 'typescore' : ty})
+        				for r in result:
+        					duplicate = db.records.find({'steam_id' : r['steam_id'], 'hero' : int(h), 'time' : int(t), 'leveling' : l, 'typescore' : ty})
+        					print(duplicate.count())
+        					if duplicate.count() > 1:
+        						dup = db.records.find_one({'steam_id' : r['steam_id'], 'hero' : int(h), 'time' : int(t), 'leveling' : l, 'typescore' : ty})
+        						#db.records.remove({'_id': dup['_id']});
+        						res.append({'steam_id' : dup['steam_id']})        
+        return jsonify({'data' : res})
+        #db.records.remove({})
+    else:
+        return jsonify({'data' : 'nothing to see here'})
+
 @app.route('/records', methods = ['POST'])
 def add_records():
     print 'ADD RECORDS'
@@ -211,9 +244,29 @@ def add_records():
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
         for elem in data:
-        	db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { $lt : int(elem['value']) }},
-                    { $set : { 'value' : int(elem['value']) }}, upsert = True);
+        	db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
+                    { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
         return jsonify({'data' : 'OK'}), 201
+
+@app.route('/addrecord', methods = ['GET'])
+def add_record():
+    print 'ADD SINGLE RECORD'
+    steam_id = request.args.get('steam_id')
+    hero = request.args.get('hero')
+    time = request.args.get('time')
+    leveling = request.args.get('leveling')
+    typescore = request.args.get('typescore')
+    value = request.args.get('value')
+    key = request.args.get('key')
+    if key == '17354443':
+        #conn = pymongo.MongoClient()
+        #db = conn.lasthitchallengedb
+        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+        db.records.insert({ 'steam_id' : steam_id, 'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore, 'value': int(value)})
+        return jsonify({'data' : 'data inserted'})
+    else:
+        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/cheaters', methods = ['POST'])
 def add_cheater():
