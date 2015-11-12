@@ -164,20 +164,40 @@ def clear_records():
         return jsonify({'data' : 'nothing to see here'})
 
 
+#coll.update(key, data, {upsert:true});
+
+##@app.route('/records', methods = ['POST'])
+##def add_records():
+##    print 'ADD RECORDS'
+##    if request.form:
+##        result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
+##        steam_id = result.get('steam_id')
+##        api_key = result.get('api_key')
+##        data = json.loads(result.get('data'))
+##        new_records = []
+##
+##        #conn = pymongo.MongoClient()
+##        #db = conn.lasthitchallengedb
+##        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+##        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+##
+##        for elem in data:
+##            rec = db.records.find_one({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore']})
+##            if rec != None:
+##                if rec['value'] < int(elem['value']):
+##                    rec['value'] = int(elem['value'])
+##                    db.records.save(rec)
+##                else:
+##                    print 'do nothing'
+##            else:
+##                new_records.append({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value' : int(elem['value'])})
+##        if len(new_records) > 0:
+##            db.records.insert(new_records)
+##        return jsonify({'data' : 'OK'}), 201
+
 @app.route('/records', methods = ['POST'])
 def add_records():
     print 'ADD RECORDS'
-#    if request.form:
-#        #print("request.form.keys() = " + str(request.form.keys()))
-#        result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
-#        steam_id = result.get('steam_id')
-#        api_key = result.get('api_key')
-#        data = json.loads(result.get('data'))
-#        record = {}
-#        datalist = []
-#        for elem in data:            
-#            records.append({'steam_id' : steam_id, 'hero' : elem['hero'], 'time' : elem['time'], 'leveling' : elem['leveling'], 'typescore' : elem['typescore'],'value' : elem['value']})
-#    return jsonify({'data' : records})
     if request.form:
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
@@ -191,17 +211,8 @@ def add_records():
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
         for elem in data:
-            rec = db.records.find_one({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore']})
-            if rec != None:
-                if rec['value'] < int(elem['value']):
-                    rec['value'] = int(elem['value'])
-                    db.records.save(rec)
-                else:
-                    print 'do nothing'
-            else:
-                new_records.append({'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value' : int(elem['value'])})
-        if len(new_records) > 0:
-            db.records.insert(new_records)
+        	db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { $lt : int(elem['value']) }},
+                    { $set : { 'value' : int(elem['value']) }}, upsert = True);
         return jsonify({'data' : 'OK'}), 201
 
 @app.route('/cheaters', methods = ['POST'])
