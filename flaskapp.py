@@ -219,7 +219,7 @@ def clear_duplicates():
 	        	for r in result:
 					if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
 						res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
-						db.records.remove({'steam_id' : r['steam_id'], 'hero' : r['hero'], 'time' : r['time'], 'typescore' : r['typescore'], 'leveling' : r['leveling']})
+						db.records.remove(r)
 					else: 
 						steam_id = r['steam_id']
 						hero = r['hero'] 
