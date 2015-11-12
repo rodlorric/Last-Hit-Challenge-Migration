@@ -221,7 +221,7 @@ def clear_duplicates():
         					print(duplicate.count())
         					if duplicate.count() > 1:
         						dup = db.records.find_one({'steam_id' : r['steam_id'], 'hero' : int(h), 'time' : int(t), 'leveling' : l, 'typescore' : ty})
-        						#db.records.remove({'_id': dup['_id']});
+        						db.records.remove({'_id': dup['_id']});
         						res.append({'steam_id' : dup['steam_id']})        
         return jsonify({'data' : res})
         #db.records.remove({})
