@@ -216,7 +216,9 @@ def clear_duplicates():
         time = -1
         typescore = "-1"
         leveling = "-1"
+        print "PRE SORT"
         result = db.records.find({'hero' : int(heroid)}).sort({'steam_id' : 1, 'time' : 1, 'typescore' : 1, 'leveling' : 1})
+        print "POST SORT"
         print("records count = " + str(result.count()))
         for r in result:
             #print ("steam_id = " + str(steam_id) + " hero = " + str(hero) + " time = " + str(time) + " typescore = " + typescore + " leveling = " + leveling)
