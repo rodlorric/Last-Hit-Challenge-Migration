@@ -216,11 +216,11 @@ def clear_duplicates():
         time = -1
         typescore = "-1"
         leveling = "-1"
-        result = db.records.find({'hero' : int(heroid)}).sort('steam_id')
+        result = db.records.find({'hero' : int(heroid)}).sort({'steam_id' : 1, 'time' : 1, 'typescore' : 1, 'leveling' : 1})
         print("records count = " + str(result.count()))
         for r in result:
             #print ("steam_id = " + str(steam_id) + " hero = " + str(hero) + " time = " + str(time) + " typescore = " + typescore + " leveling = " + leveling)
-            if (str(steam_id) == str(r['steam_id']) and int(hero) == int(r['hero']) and int(time) == int(r['time']) and str(typescore) == str(r['typescore']) and str(leveling) == str(r['leveling'])):
+            if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
                 print "DUPLICATE!"
                 res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
                 db.records.remove(r)
