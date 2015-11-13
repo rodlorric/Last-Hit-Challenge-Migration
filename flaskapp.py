@@ -218,19 +218,19 @@ def clear_duplicates():
         leveling = "-1"
         result = db.records.find({'hero' : int(heroid)}).sort('steam_id')
         print("records count = " + str(result.count()))
-        if result.count() > 0:
-            for r in result:
-                if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
-                    res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
-                    db.records.remove(r)
-                else: 
-                    steam_id = r['steam_id']
-                    hero = r['hero'] 
-                    time = r['time'] 
-                    typescore = r['typescore']
-                    leveling = r['leveling']
+        for r in result:
+            print ("steam_id = " + str(steam_id) + " hero = " + str(hero) + " time = " + time + " typescore = " + typescore + " leveling = " + leveling)
+            if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
+                print "DUPLICATE!"
+                res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
+                db.records.remove(r)
+            else: 
+                steam_id = r['steam_id']
+                hero = r['hero'] 
+                time = r['time'] 
+                typescore = r['typescore']
+                leveling = r['leveling']
         return jsonify({'data' : res})
-        #db.records.remove({})
     else:
         return jsonify({'data' : 'nothing to see here'})
 
