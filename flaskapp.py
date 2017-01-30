@@ -307,27 +307,29 @@ def add_records():
                 if rec == None:
                     db.cheaters.insert({'steam_id' : steam_id})
         return jsonify({'data' : 'OK'}), 201
-
-@app.route('/addrecord', methods = ['GET'])
-def add_record():
-    print 'ADD RECORD'
-    steam_id = request.args.get('steam_id')
-    hero = request.args.get('hero')
-    time = request.args.get('time')
-    leveling = request.args.get('leveling')
-    typescore = request.args.get('typescore')
-    value = request.args.get('value')
-    key = request.args.get('key')
-    if key == '17354443':
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        db.records.insert({ 'steam_id' : steam_id, 'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore, 'value': int(value)})
-        return jsonify({'data' : 'data inserted'})
-    else:
-        return jsonify({'data' : 'nothing to see here'})
-
+    else: 
+        print "ERROR?"
+#        
+#@app.route('/addrecord', methods = ['GET'])
+#def add_record():
+#    print 'ADD RECORD'
+#    steam_id = request.args.get('steam_id')
+#    hero = request.args.get('hero')
+#    time = request.args.get('time')
+#    leveling = request.args.get('leveling')
+#    typescore = request.args.get('typescore')
+#    value = request.args.get('value')
+#    key = request.args.get('key')
+#    if key == '17354443':
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        db.records.insert({ 'steam_id' : steam_id, 'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore, 'value': int(value)})
+#        return jsonify({'data' : 'data inserted'})
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
+#
 @app.route('/cheaters', methods = ['POST'])
 def add_cheater():
     print 'ADD CHEATERS'
