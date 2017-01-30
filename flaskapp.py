@@ -100,16 +100,16 @@ def get_records():
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
     
-            steam_id_records = []
-            #query the DB for all the parkpoints
-            result = db.records.find({'steam_id' : steam_id})
-            for rec in result:
-                steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+        steam_id_records = []
+        #query the DB for all the parkpoints
+        result = db.records.find({'steam_id' : steam_id})
+        for rec in result:
+            steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
     
-            data = {"api_key" : api_key, "steam_id" : steam_id, "data" : steam_id_records}
+        data = {"api_key" : api_key, "steam_id" : steam_id, "data" : steam_id_records}
     
-            return jsonify({'data' : data})
-            #Now turn the results into valid JSON
+        return jsonify({'data' : data})
+        #Now turn the results into valid JSON
         #return str(json.dumps({'data':list(result)},default=json_util.default))
     else:
         return jsonify({'data' : 'nothing to see here'})
