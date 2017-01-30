@@ -304,9 +304,11 @@ def add_records():
             print 'post over_max_score = '
             print  over_max_score
             if not over_max_score:
+                print 'not over_max_score'
                 db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
                         { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
             else:
+                print 'over_max_score = True!!! cheater!'
                 conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
                 db = conn[os.environ['OPENSHIFT_APP_NAME']]
                 rec = db.cheaters.find_one({'steam_id' : steam_id})
