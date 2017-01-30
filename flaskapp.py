@@ -281,9 +281,11 @@ def add_records():
             print 'value = '
             print v
             if t == 150:
+                print 't ==  150'
                 if ts == 'c' and v >= 40:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v >= 20:
+                    print 'why?'
                     over_max_score = True
             elif t == 300:
                 if ts == 'c' and v >= 82:
