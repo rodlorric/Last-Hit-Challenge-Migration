@@ -263,9 +263,9 @@ def add_records():
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
         #local time_list = {"150", "300", "450", "600"}
-        #local type_list = {"c", "l", "d", "a"}
-        over_max_score = False
+        #local type_list = {"c", "l", "d", "a"}        
         for elem in data:
+            over_max_score = False
             t = elem['time']
             ts = elem['typescore']
             v = elem['value']
