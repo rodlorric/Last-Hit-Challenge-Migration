@@ -268,18 +268,12 @@ def add_records():
         #local time_list = {"150", "300", "450", "600"}
         #local type_list = {"c", "l", "d", "a"}
         over_max_score = False
-        print 'prev over_max_score = '
-        print over_max_score
+        print 'prev over_max_score = %s' % over_max_score
         for elem in data:
             t = elem['time']
             ts = elem['typescore']
             v = elem['value']
-            print 'time = '
-            print t
-            print 'typescore = '
-            print ts
-            print 'value = '
-            print v
+            print "time =%s, typescore = %s, value = %d" % (t, ts, v)
             if t == '150':
                 print 't ==  150'
                 if ts == 'c' and v > 40:
