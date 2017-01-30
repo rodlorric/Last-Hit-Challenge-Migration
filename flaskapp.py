@@ -6,6 +6,8 @@ import json
 import os
 from bson import json_util
 from bson import objectid
+#import schedule
+#import time
 
 app = Flask(__name__, static_url_path = "")
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
@@ -64,6 +66,15 @@ records = [
 #        'value' : 5
 #    }
 ]
+
+#def job():
+#    print("I'm working...")
+#    schedule.every().day.at("00:00").do(job)
+#
+#    while 1:
+#        schedule.run_pending()
+#        time.sleep(1)
+
 
 @app.route('/records', methods = ['GET'])
 def get_records():
@@ -251,9 +262,46 @@ def add_records():
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
+
+        #local time_list = {"150", "300", "450", "600"}
+        #local type_list = {"c", "l", "d", "a"}
+        over_max_score = False
+        print('prev over_max_score = ' + over_max_score)
         for elem in data:
-            db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
-                    { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
+            t = elem['time']
+            ts = elem['typescore']
+            v = elem['value']
+            if t == '150':
+                if ts == 'c' and v <= 40:
+                    over_max_score = True
+                elif (ts == 'l' or ts == 'd') and v <= 20:
+                    over_max_score = True
+            elif t == '300':
+                if ts == 'c' and v <= 82:
+                    over_max_score = True
+                elif (ts == 'l' or ts == 'd') and v <= 41:
+                    over_max_score = True
+            elif t == '450':
+                if ts == 'c' and v <= 124:
+                    over_max_score = True
+                elif (ts == 'l' or ts = 'd') and v <= 62:
+                    over_max_score = True
+            else: # t == '600':
+                if ts == 'c' and v <= 164:
+                    over_max_score = True
+                elif (ts == 'l' or ts = 'd') and v <= 82:
+                    over_max_score = True
+
+            print('post over_max_score = ' + over_max_score)
+            if not over_max_score:
+                db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
+                        { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
+            else:
+                conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+                db = conn[os.environ['OPENSHIFT_APP_NAME']]
+                rec = db.cheaters.find_one({'steam_id' : steam_id})
+                if rec == None:
+                    db.cheaters.insert({'steam_id' : steam_id})
         return jsonify({'data' : 'OK'}), 201
 
 @app.route('/addrecord', methods = ['GET'])
