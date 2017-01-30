@@ -250,6 +250,7 @@ def clear_duplicates():
 @app.route('/records', methods = ['POST'])
 def add_records():
     print 'ADD RECORDS'
+    print 'CONTINUE...'
     if request.form:
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
@@ -262,6 +263,7 @@ def add_records():
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
+        print 'CONNECTED'
 
         #local time_list = {"150", "300", "450", "600"}
         #local type_list = {"c", "l", "d", "a"}
