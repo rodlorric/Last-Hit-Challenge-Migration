@@ -282,25 +282,25 @@ def add_records():
             print v
             if t == '150':
                 print 't ==  150'
-                if ts == 'c' and v >= 40:
+                if ts == 'c' and v > 40:
                     over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v >= 20:
+                elif (ts == 'l' or ts == 'd') and v > 20:
                     print 'why?'
                     over_max_score = True
             elif t == 300:
-                if ts == 'c' and v >= 82:
+                if ts == 'c' and v > 82:
                     over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v >= 41:
+                elif (ts == 'l' or ts == 'd') and v > 41:
                     over_max_score = True
             elif t == 450:
-                if ts == 'c' and v >= 124:
+                if ts == 'c' and v > 124:
                     over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v >= 62:
+                elif (ts == 'l' or ts == 'd') and v > 62:
                     over_max_score = True
             else: # t == '600':
-                if ts == 'c' and v >= 164:
+                if ts == 'c' and v > 164:
                     over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v >= 82:
+                elif (ts == 'l' or ts == 'd') and v > 82:
                     over_max_score = True
 
             print 'post over_max_score = '
