@@ -280,17 +280,17 @@ def add_records():
             print ts
             print 'value = '
             print v
-            if t == '150':
+            if t == 150:
                 if ts == 'c' and v <= 40:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v <= 20:
                     over_max_score = True
-            elif t == '300':
+            elif t == 300:
                 if ts == 'c' and v <= 82:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v <= 41:
                     over_max_score = True
-            elif t == '450':
+            elif t == 450:
                 if ts == 'c' and v <= 124:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v <= 62:
