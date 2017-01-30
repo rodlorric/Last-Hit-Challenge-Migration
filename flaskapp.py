@@ -260,7 +260,7 @@ def add_records():
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
-        if api_key == api
+        if api_key == api:
             data = json.loads(result.get('data'))
             new_records = []
 
