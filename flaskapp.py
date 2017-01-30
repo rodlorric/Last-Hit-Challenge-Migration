@@ -284,12 +284,12 @@ def add_records():
             elif t == '450':
                 if ts == 'c' and v <= 124:
                     over_max_score = True
-                elif (ts == 'l' or ts = 'd') and v <= 62:
+                elif (ts == 'l' or ts == 'd') and v <= 62:
                     over_max_score = True
             else: # t == '600':
                 if ts == 'c' and v <= 164:
                     over_max_score = True
-                elif (ts == 'l' or ts = 'd') and v <= 82:
+                elif (ts == 'l' or ts == 'd') and v <= 82:
                     over_max_score = True
 
             print('post over_max_score = ' + over_max_score)
