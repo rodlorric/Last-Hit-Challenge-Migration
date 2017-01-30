@@ -250,7 +250,6 @@ def clear_duplicates():
 @app.route('/records', methods = ['POST'])
 def add_records():
     print 'ADD RECORDS'
-    print 'CONTINUE...'
     if request.form:
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
@@ -263,28 +262,19 @@ def add_records():
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
-        print 'CONNECTED'
-
         #local time_list = {"150", "300", "450", "600"}
         #local type_list = {"c", "l", "d", "a"}
         over_max_score = False
-        print 'prev over_max_score = %s' % over_max_score
         for elem in data:
             t = elem['time']
             ts = elem['typescore']
             v = elem['value']
-            print "time =%s, typescore = %s, value = %d" % (t, ts, v)
             if t == '150':
-                print 't ==  150'
                 if ts == 'c' and v > 40:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 20:
-                    print 'why?'
                     over_max_score = True
-                else: 
-                    over_max_score = False
             elif t == '300':
-                print 't ==  300'
                 if ts == 'c' and v > 82:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 41:
@@ -292,31 +282,21 @@ def add_records():
                 else: 
                     over_max_score = False
             elif t == '450':
-                print 't ==  450'
                 if ts == 'c' and v > 124:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 62:
                     over_max_score = True
-                else: 
-                    over_max_score = False
             elif t == '600':
                 if ts == 'c' and v > 164:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 82:
                     over_max_score = True
-                else: 
-                    over_max_score = False
             else:
                 print 'WRONG TIME!'
-
-            print 'post over_max_score = '
-            print  over_max_score
             if not over_max_score:
-                print 'not over_max_score'
                 db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
                         { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
             else:
-                print 'over_max_score = True!!! cheater!'
                 conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
                 db = conn[os.environ['OPENSHIFT_APP_NAME']]
                 rec = db.cheaters.find_one({'steam_id' : steam_id})
