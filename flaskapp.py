@@ -268,14 +268,18 @@ def add_records():
         #local time_list = {"150", "300", "450", "600"}
         #local type_list = {"c", "l", "d", "a"}
         over_max_score = False
-        s = 'prev over_max_score = ' + over_max_score
-        print s
+        print 'prev over_max_score = '
+        print over_max_score
         for elem in data:
             t = elem['time']
             ts = elem['typescore']
             v = elem['value']
-            s = 'time = ' + t + ', typescore = ' + ts + ', value = ' + v
-            print s
+            print 'time = '
+            print t
+            print 'typescore = '
+            print ts
+            print 'value = '
+            print v
             if t == '150':
                 if ts == 'c' and v <= 40:
                     over_max_score = True
@@ -297,8 +301,8 @@ def add_records():
                 elif (ts == 'l' or ts == 'd') and v <= 82:
                     over_max_score = True
 
-            s = 'post over_max_score = ' + over_max_score
-            print s
+            print 'post over_max_score = '
+            print  over_max_score
             if not over_max_score:
                 db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
                         { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
