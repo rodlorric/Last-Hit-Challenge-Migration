@@ -287,23 +287,31 @@ def add_records():
                 elif (ts == 'l' or ts == 'd') and v > 20:
                     print 'why?'
                     over_max_score = True
+                else: 
+                    over_max_score = False
             elif t == '300':
                 print 't ==  300'
                 if ts == 'c' and v > 82:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 41:
                     over_max_score = True
+                else: 
+                    over_max_score = False
             elif t == '450':
                 print 't ==  450'
                 if ts == 'c' and v > 124:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 62:
                     over_max_score = True
+                else: 
+                    over_max_score = False
             elif t == '600':
                 if ts == 'c' and v > 164:
                     over_max_score = True
                 elif (ts == 'l' or ts == 'd') and v > 82:
                     over_max_score = True
+                else: 
+                    over_max_score = False
             else:
                 print 'WRONG TIME!'
 
