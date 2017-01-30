@@ -212,46 +212,46 @@ def get_leaders():
 ##            db.records.insert(new_records)
 ##        return jsonify({'data' : 'OK'}), 201
 
-@app.route('/clearduplicates', methods = ['GET'])
-def clear_duplicates():
-    print 'CLEAR DUPLICATES'
-    key = request.args.get('key')
-    #heroid = request.args.get('heroid')
-
-    if key == '17354443':
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-
-        #heroes = ["102","73","68","1","2","3","65","38","4","62","78","99","61","96","81","66","56","51","5","55","50","43","87","69","49","6","107","7","103","106","58","33","41","72","59","74","91","64","8","90","23","104","52","31","54","25","26","80","48","77","97","94","82","9","10","89","53","36","60","88","84","57","111","76","44","12","110","13","14","45","39","15","32","86","16","105","79","11","27","75","101","28","93","35","67","71","17","18","46","109","29","98","34","19","83","95","100","85","70","20","40","47","92","37","63","21","112","30","42"]
-        heroes = [102,73,68,1,2,3,65,38,4,62,78,99,61,96,81,66,56,51,5,55,50,43,87,69,49,6,107,7,103,106,58,33,41,72,59,74,91,64,8,90,23,104,52,31,54,25,26,80,48,77,97,94,82,9,10,89,53,36,60,88,84,57,111,76,44,12,110,13,14,45,39,15,32,86,16,105,79,11,27,75,101,28,93,35,67,71,17,18,46,109,29,98,34,19,83,95,100,85,70,20,40,47,92,37,63,21,112,30,42]
-        res = []
-        for h in heroes:
-	        steam_id = "-1"
-	        hero = -1
-	        time = -1
-	        typescore = "-1"
-	        leveling = "-1"
-	        print "PRE SORT"
-	        result = db.records.find({'hero' : h}).sort([('steam_id', 1), ('time', 1), ('typescore', 1), ('leveling', 1)])
-	        print "POST SORT"
-	        print("records count = " + str(result.count()))
-	        for r in result:
-	            #print ("steam_id = " + str(steam_id) + " hero = " + str(hero) + " time = " + str(time) + " typescore = " + typescore + " leveling = " + leveling)
-	            if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
-	                print "DUPLICATE!"
-	                res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
-	                db.records.remove(r)
-	            else: 
-	                steam_id = r['steam_id']
-	                hero = r['hero'] 
-	                time = r['time'] 
-	                typescore = r['typescore']
-	                leveling = r['leveling']
-        return jsonify({'data' : res})
-    else:
-        return jsonify({'data' : 'nothing to see here'})
+#@app.route('/clearduplicates', methods = ['GET'])
+#def clear_duplicates():
+#    print 'CLEAR DUPLICATES'
+#    key = request.args.get('key')
+#    #heroid = request.args.get('heroid')
+#
+#    if key == '17354443':
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#
+#        #heroes = ["102","73","68","1","2","3","65","38","4","62","78","99","61","96","81","66","56","51","5","55","50","43","87","69","49","6","107","7","103","106","58","33","41","72","59","74","91","64","8","90","23","104","52","31","54","25","26","80","48","77","97","94","82","9","10","89","53","36","60","88","84","57","111","76","44","12","110","13","14","45","39","15","32","86","16","105","79","11","27","75","101","28","93","35","67","71","17","18","46","109","29","98","34","19","83","95","100","85","70","20","40","47","92","37","63","21","112","30","42"]
+#        heroes = [102,73,68,1,2,3,65,38,4,62,78,99,61,96,81,66,56,51,5,55,50,43,87,69,49,6,107,7,103,106,58,33,41,72,59,74,91,64,8,90,23,104,52,31,54,25,26,80,48,77,97,94,82,9,10,89,53,36,60,88,84,57,111,76,44,12,110,13,14,45,39,15,32,86,16,105,79,11,27,75,101,28,93,35,67,71,17,18,46,109,29,98,34,19,83,95,100,85,70,20,40,47,92,37,63,21,112,30,42]
+#        res = []
+#        for h in heroes:
+#	        steam_id = "-1"
+#	        hero = -1
+#	        time = -1
+#	        typescore = "-1"
+#	        leveling = "-1"
+#	        print "PRE SORT"
+#	        result = db.records.find({'hero' : h}).sort([('steam_id', 1), ('time', 1), ('typescore', 1), ('leveling', 1)])
+#	        print "POST SORT"
+#	        print("records count = " + str(result.count()))
+#	        for r in result:
+#	            #print ("steam_id = " + str(steam_id) + " hero = " + str(hero) + " time = " + str(time) + " typescore = " + typescore + " leveling = " + leveling)
+#	            if (steam_id == r['steam_id'] and hero == r['hero'] and time == r['time'] and typescore == r['typescore'] and leveling == r['leveling']):
+#	                print "DUPLICATE!"
+#	                res.append({'steam_id' : r['steam_id'], 'hero' : r['hero']})
+#	                db.records.remove(r)
+#	            else: 
+#	                steam_id = r['steam_id']
+#	                hero = r['hero'] 
+#	                time = r['time'] 
+#	                typescore = r['typescore']
+#	                leveling = r['leveling']
+#        return jsonify({'data' : res})
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/records', methods = ['POST'])
 def add_records():
@@ -366,38 +366,38 @@ def add_cheater():
 #    db.cheaters.remove({})
 #    return jsonify({'data' : 'data cleared'})
 
-@app.route('/delrecord', methods = ['GET'])
-def del_cheater():
-    print 'DEL RECORDS'
-    steam_id = request.args.get('steam_id')
-    key = request.args.get('key')
-    if key == '17354443':
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        db.records.remove({"steam_id" : steam_id})
-        return jsonify({'data' : 'data cleared'})
-    else:
-        return jsonify({'data' : 'nothing to see here'})
+#@app.route('/delrecord', methods = ['GET'])
+#def del_cheater():
+#    print 'DEL RECORDS'
+#    steam_id = request.args.get('steam_id')
+#    key = request.args.get('key')
+#    if key == '17354443':
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        db.records.remove({"steam_id" : steam_id})
+#        return jsonify({'data' : 'data cleared'})
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
 
-@app.route('/swaprecords', methods = ['GET'])
-def swap_records():
-    print 'SWAP RECORDS'
-    hero_from = request.args.get('hero_from')
-    hero_to = request.args.get('hero_to')
-    key = request.args.get('key')
-    print('hero_from = ' + str(hero_from))
-    print('hero_to = ' + str(hero_to))
-    if key == '17354443':
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        db.records.update_many({'hero':int(hero_from)},{"$set":{'hero':int(hero_to)}})
-        return jsonify({'data' : 'data swapped'})
-    else:
-        return jsonify({'data' : 'nothing to see here'})
+#@app.route('/swaprecords', methods = ['GET'])
+#def swap_records():
+#    print 'SWAP RECORDS'
+#    hero_from = request.args.get('hero_from')
+#    hero_to = request.args.get('hero_to')
+#    key = request.args.get('key')
+#    print('hero_from = ' + str(hero_from))
+#    print('hero_to = ' + str(hero_to))
+#    if key == '17354443':
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        db.records.update_many({'hero':int(hero_from)},{"$set":{'hero':int(hero_to)}})
+#        return jsonify({'data' : 'data swapped'})
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
