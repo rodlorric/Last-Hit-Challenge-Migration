@@ -280,7 +280,7 @@ def add_records():
             print ts
             print 'value = '
             print v
-            if t == 150:
+            if t == '150':
                 print 't ==  150'
                 if ts == 'c' and v >= 40:
                     over_max_score = True
