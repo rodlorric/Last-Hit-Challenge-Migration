@@ -13,6 +13,8 @@ app = Flask(__name__, static_url_path = "")
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 auth = HTTPBasicAuth()
 
+api = '2E2B10BDCEBB162D71C2A98934465B867EFDBC7423302956A80064771DE05B36'
+
 @auth.get_password
 def get_password(username):
     if username == 'miguel':
@@ -91,47 +93,49 @@ def get_records():
     #    return jsonify({'data' : data})
     #else:
     #    return jsonify({'data' : records})
-
-    #setup the connection
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
-
-    steam_id_records = []
-    #query the DB for all the parkpoints
-    result = db.records.find({'steam_id' : steam_id})
-    for rec in result:
-        steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
-
-    data = {"api_key" : api_key, "steam_id" : steam_id, "data" : steam_id_records}
-
-    return jsonify({'data' : data})
-    #Now turn the results into valid JSON
-    #return str(json.dumps({'data':list(result)},default=json_util.default))
-
-@app.route('/allrecords', methods = ['GET'])
-def all_records():
-    print 'ALL RECORDS'
-    key = request.args.get('key')
-
-    if key == '17354443':
+    if api_key == api:
+        #setup the connection
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
-
-        steam_id_records = []
-        #query the DB for all the parkpoints
-        result = db.records.find()
-        for rec in result:
-            steam_id_records.append({'steam_id' : rec['steam_id'], 'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
-
-        data = {"data" : steam_id_records}
-        return jsonify({'data' : data})
-        #return 'shit'
+    
+            steam_id_records = []
+            #query the DB for all the parkpoints
+            result = db.records.find({'steam_id' : steam_id})
+            for rec in result:
+                steam_id_records.append({'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+    
+            data = {"api_key" : api_key, "steam_id" : steam_id, "data" : steam_id_records}
+    
+            return jsonify({'data' : data})
+            #Now turn the results into valid JSON
+        #return str(json.dumps({'data':list(result)},default=json_util.default))
     else:
         return jsonify({'data' : 'nothing to see here'})
+
+#@app.route('/allrecords', methods = ['GET'])
+#def all_records():
+#    print 'ALL RECORDS'
+#    key = request.args.get('key')
+#
+#    if key == '17354443':
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#
+#        steam_id_records = []
+#        #query the DB for all the parkpoints
+#        result = db.records.find()
+#        for rec in result:
+#            steam_id_records.append({'steam_id' : rec['steam_id'], 'hero' : rec['hero'], 'time' : rec['time'], 'leveling' : rec['leveling'], 'typescore' : rec['typescore'],'value' : rec['value']})
+#
+#        data = {"data" : steam_id_records}
+#        return jsonify({'data' : data})
+#        #return 'shit'
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
@@ -140,39 +144,41 @@ def get_leaders():
     api_key = request.args.get('api_key')
     hero = request.args.get('hero')
     time = request.args.get('time')
-    api_key = request.args.get('time')
     leveling = request.args.get('leveling')
     typescore = request.args.get('typescore')
 
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn[os.environ['OPENSHIFT_APP_NAME']]
-    #conn = pymongo.MongoClient()
-    #db = conn.lasthitchallengedb
-
-    table = []
-    result = db.records.find({'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore}).sort('value', -1).limit(100)
-    for rec in result:
-        pos = {'steam_id' : rec['steam_id'], 'value' : rec['value']}
-        table.append(pos)
-    data = {'steam_id' : steam_id, 'api_key' : api_key, 'data' : table}
-    return jsonify({'data' : data})
-
-@app.route('/clear', methods = ['GET'])
-def clear_records():
-    print 'CLEAR'
-    key = request.args.get('key')
-
-    if key == '17354443':
+    if api_key == api:
         conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
 
-        db.records.remove({})
-
-        return jsonify({'data' : 'data cleared'})
+        table = []
+        result = db.records.find({'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore}).sort('value', -1).limit(100)
+        for rec in result:
+            pos = {'steam_id' : rec['steam_id'], 'value' : rec['value']}
+            table.append(pos)
+        data = {'steam_id' : steam_id, 'api_key' : api_key, 'data' : table}
+        return jsonify({'data' : data})
     else:
         return jsonify({'data' : 'nothing to see here'})
+
+#@app.route('/clear', methods = ['GET'])
+#def clear_records():
+#    print 'CLEAR'
+#    key = request.args.get('key')
+#
+#    if key == '17354443':
+#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+#        #conn = pymongo.MongoClient()
+#        #db = conn.lasthitchallengedb
+#
+#        db.records.remove({})
+#
+#        return jsonify({'data' : 'data cleared'})
+#    else:
+#        return jsonify({'data' : 'nothing to see here'})
 
 
 #coll.update(key, data, {upsert:true});
@@ -254,57 +260,60 @@ def add_records():
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
-        data = json.loads(result.get('data'))
-        new_records = []
+        if api_key == api
+            data = json.loads(result.get('data'))
+            new_records = []
 
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
+            #conn = pymongo.MongoClient()
+            #db = conn.lasthitchallengedb
+            conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+            db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
-        #local time_list = {"150", "300", "450", "600"}
-        #local type_list = {"c", "l", "d", "a"}        
-        for elem in data:
-            over_max_score = False
-            t = elem['time']
-            ts = elem['typescore']
-            v = elem['value']
-            if t == '150':
-                if ts == 'c' and v > 40:
-                    over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v > 20:
-                    over_max_score = True
-            elif t == '300':
-                if ts == 'c' and v > 82:
-                    over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v > 41:
-                    over_max_score = True
-                else: 
-                    over_max_score = False
-            elif t == '450':
-                if ts == 'c' and v > 124:
-                    over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v > 62:
-                    over_max_score = True
-            elif t == '600':
-                if ts == 'c' and v > 164:
-                    over_max_score = True
-                elif (ts == 'l' or ts == 'd') and v > 82:
-                    over_max_score = True
-            else:
-                print 'WRONG TIME!'
-            if not over_max_score:
-                db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
-                        { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
-            else:
-                conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-                db = conn[os.environ['OPENSHIFT_APP_NAME']]
-                rec = db.cheaters.find_one({'steam_id' : steam_id})
-                if rec == None:
-                    db.cheaters.insert({'steam_id' : steam_id})
-        return jsonify({'data' : 'OK'}), 201
+            #local time_list = {"150", "300", "450", "600"}
+            #local type_list = {"c", "l", "d", "a"}        
+            for elem in data:
+                over_max_score = False
+                t = elem['time']
+                ts = elem['typescore']
+                v = elem['value']
+                if t == '150':
+                    if ts == 'c' and v > 40:
+                        over_max_score = True
+                    elif (ts == 'l' or ts == 'd') and v > 20:
+                        over_max_score = True
+                elif t == '300':
+                    if ts == 'c' and v > 82:
+                        over_max_score = True
+                    elif (ts == 'l' or ts == 'd') and v > 41:
+                        over_max_score = True
+                    else: 
+                        over_max_score = False
+                elif t == '450':
+                    if ts == 'c' and v > 124:
+                        over_max_score = True
+                    elif (ts == 'l' or ts == 'd') and v > 62:
+                        over_max_score = True
+                elif t == '600':
+                    if ts == 'c' and v > 164:
+                        over_max_score = True
+                    elif (ts == 'l' or ts == 'd') and v > 82:
+                        over_max_score = True
+                else:
+                    print 'WRONG TIME!'
+                if not over_max_score:
+                    db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
+                            { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
+                else:
+                    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+                    db = conn[os.environ['OPENSHIFT_APP_NAME']]
+                    rec = db.cheaters.find_one({'steam_id' : steam_id})
+                    if rec == None:
+                        db.cheaters.insert({'steam_id' : steam_id})
+            return jsonify({'data' : 'OK'}), 201
+        else:
+            return jsonify({'data' : 'nothing to see here'})    
     else: 
-        print "ERROR?"
+        return jsonify({'data' : 'nothing to see here'})
 #        
 #@app.route('/addrecord', methods = ['GET'])
 #def add_record():
@@ -334,15 +343,18 @@ def add_cheater():
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
 
-        #conn = pymongo.MongoClient()
-        #db = conn.lasthitchallengedb
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-        db = conn[os.environ['OPENSHIFT_APP_NAME']]
-        rec = db.cheaters.find_one({'steam_id' : steam_id})
-        if rec == None:
-            db.cheaters.insert({'steam_id' : steam_id})
+        if api_key == api:
+            #conn = pymongo.MongoClient()
+            #db = conn.lasthitchallengedb
+            conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+            db = conn[os.environ['OPENSHIFT_APP_NAME']]
+            rec = db.cheaters.find_one({'steam_id' : steam_id})
+            if rec == None:
+                db.cheaters.insert({'steam_id' : steam_id})
 
-        return jsonify({'data' : 'OK'}), 201
+            return jsonify({'data' : 'OK'}), 201
+        else:
+            return jsonify({'data' : 'nothing to see here'})
 
 #@app.route('/delcheaters', methods = ['GET'])
 #def del_cheater():
