@@ -281,6 +281,7 @@ def add_records():
                 t = elem['time']
                 ts = elem['typescore']
                 v = elem['value']
+                print 'previous max_value'
                 max_value = ((t / 30) * 5) + math.floor(t / 300)
                 print 'max_value = ' + str(max_value)
 
