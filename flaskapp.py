@@ -14,6 +14,8 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 auth = HTTPBasicAuth()
 
 api = '2E2B10BDCEBB162D71C2A98934465B867EFDBC7423302956A80064771DE05B36'
+creeps_per_wave = 5
+siege_creep_interval = 300
 
 @auth.get_password
 def get_password(username):
@@ -276,30 +278,39 @@ def add_records():
                 t = elem['time']
                 ts = elem['typescore']
                 v = elem['value']
-                if t == '150':
-                    if ts == 'c' and v > 40:
-                        over_max_score = True
-                    elif (ts == 'l' or ts == 'd') and v > 20:
-                        over_max_score = True
-                elif t == '300':
-                    if ts == 'c' and v > 82:
-                        over_max_score = True
-                    elif (ts == 'l' or ts == 'd') and v > 41:
-                        over_max_score = True
-                    else: 
-                        over_max_score = False
-                elif t == '450':
-                    if ts == 'c' and v > 124:
-                        over_max_score = True
-                    elif (ts == 'l' or ts == 'd') and v > 62:
-                        over_max_score = True
-                elif t == '600':
-                    if ts == 'c' and v > 164:
-                        over_max_score = True
-                    elif (ts == 'l' or ts == 'd') and v > 82:
-                        over_max_score = True
+                max_value = ((t / 30) * 5) + math.floor(t / 300)
+
+                if (ts == 'c' and (v > max_value * 2 )) or (ts == 'l' or ts = 'd' and v > max_value):
+                    over_max_score = True
                 else:
-                    print 'WRONG TIME!'
+                    over_max_score = False
+
+                ##
+                ##if t == '150':
+                ##    if ts == 'c' and v > 40:
+                ##        over_max_score = True
+                ##    elif (ts == 'l' or ts == 'd') and v > 20:
+                ##        over_max_score = True
+                ##elif t == '300':
+                ##    if ts == 'c' and v > 82:
+                ##        over_max_score = True
+                ##    elif (ts == 'l' or ts == 'd') and v > 41:
+                ##        over_max_score = True
+                ##    else: 
+                ##        over_max_score = False
+                ##elif t == '450':
+                ##    if ts == 'c' and v > 124:
+                ##        over_max_score = True
+                ##    elif (ts == 'l' or ts == 'd') and v > 62:
+                ##        over_max_score = True
+                ##elif t == '600':
+                ##    if ts == 'c' and v > 164:
+                ##        over_max_score = True
+                ##    elif (ts == 'l' or ts == 'd') and v > 82:
+                ##        over_max_score = True
+                ##else:
+                ##    print 'WRONG TIME!'
+                ##
                 if not over_max_score:
                     db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
                             { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
