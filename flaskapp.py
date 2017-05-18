@@ -283,7 +283,7 @@ def add_records():
                 ts = elem['typescore']
                 v = elem['value']
                 print 'previous max_value'
-                max_value = ((t / 30) * 5) + math.floor(t / 300)
+                max_value = ((int(t) / 30) * 5) + math.floor(int(t) / 300)
                 print 'max_value = ' + str(max_value)
 
                 if ((ts == 'c' and (v > max_value * 2 )) or ((ts == 'l' or ts == 'd') and v > max_value)):
