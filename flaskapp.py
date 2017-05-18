@@ -260,12 +260,9 @@ def get_leaders():
 def add_records():
     print 'ADD RECORDS'
     if request.form:
-        print 'request.form'
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
-        print 'api = ' + str(api)
-        print 'api_key = ' + str(api_key)
         if api_key == api:
             data = json.loads(result.get('data'))
             new_records = []
@@ -282,17 +279,12 @@ def add_records():
                 t = elem['time']
                 ts = elem['typescore']
                 v = elem['value']
-                print 'previous max_value'
                 max_value = ((int(t) / 30) * 5) + math.floor(int(t) / 300)
-                print 'max_value = ' + str(max_value)
 
                 if ((ts == 'c' and (v > max_value * 2 )) or ((ts == 'l' or ts == 'd') and v > max_value)):
                     over_max_score = True
-                    print 'over_max_score = True'
                 else:
                     over_max_score = False
-                    print 'over_max_score = False'
-
                 ##
                 ##if t == '150':
                 ##    if ts == 'c' and v > 40:
