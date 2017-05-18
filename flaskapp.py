@@ -280,7 +280,7 @@ def add_records():
                 v = elem['value']
                 max_value = ((t / 30) * 5) + math.floor(t / 300)
 
-                if ((ts == 'c' and (v > max_value * 2 )) or (ts == 'l' or ts = 'd' and v > max_value)):
+                if ((ts == 'c' and (v > max_value * 2 )) or ((ts == 'l' or ts = 'd') and v > max_value)):
                     over_max_score = True
                 else:
                     over_max_score = False
