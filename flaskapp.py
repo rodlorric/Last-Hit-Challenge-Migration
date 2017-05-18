@@ -263,6 +263,8 @@ def add_records():
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
+        print 'api = ' + str(api)
+        print 'api_key = ' + str(api_key)
         if api_key == api:
             data = json.loads(result.get('data'))
             new_records = []
@@ -326,9 +328,9 @@ def add_records():
                         db.cheaters.insert({'steam_id' : steam_id})
             return jsonify({'data' : 'OK'}), 201
         else:
-            return jsonify({'data' : 'nothing to see here'})    
+            return jsonify({'data' : 'nothing to see here'}), 403
     else: 
-        return jsonify({'data' : 'nothing to see here'})
+        return jsonify({'data' : 'nothing to see here'}), 403
 #        
 #@app.route('/addrecord', methods = ['GET'])
 #def add_record():
