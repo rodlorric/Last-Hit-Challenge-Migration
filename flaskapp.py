@@ -279,11 +279,14 @@ def add_records():
                 ts = elem['typescore']
                 v = elem['value']
                 max_value = ((t / 30) * 5) + math.floor(t / 300)
+                print 'max_value = ' + str(max_value)
 
                 if ((ts == 'c' and (v > max_value * 2 )) or ((ts == 'l' or ts == 'd') and v > max_value)):
                     over_max_score = True
+                    print 'over_max_score = True'
                 else:
                     over_max_score = False
+                    print 'over_max_score = False'
 
                 ##
                 ##if t == '150':
