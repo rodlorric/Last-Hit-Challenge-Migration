@@ -259,6 +259,7 @@ def get_leaders():
 def add_records():
     print 'ADD RECORDS'
     if request.form:
+        print 'request.form'
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
         api_key = result.get('api_key')
