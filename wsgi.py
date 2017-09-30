@@ -16,7 +16,7 @@ siege_creep_interval = 300
 
 @application.route("/")
 def hello():
-    return "Hello World!"
+    return "1 Hello World!"
 
 @application.errorhandler(400)
 def not_found(error):
