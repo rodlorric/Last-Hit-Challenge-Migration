@@ -87,7 +87,7 @@ def get_records():
     #    return jsonify({'data' : records})
     if api_key == api:
         #setup the connection
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
@@ -112,7 +112,7 @@ def get_records():
 #    key = request.args.get('key')
 #
 #    if key == '17354443':
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
@@ -140,7 +140,7 @@ def get_leaders():
     typescore = request.args.get('typescore')
 
     if api_key == api:
-        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
         db = conn[os.environ['OPENSHIFT_APP_NAME']]
         #conn = pymongo.MongoClient()
         #db = conn.lasthitchallengedb
@@ -161,7 +161,7 @@ def get_leaders():
 #    key = request.args.get('key')
 #
 #    if key == '17354443':
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
@@ -187,7 +187,7 @@ def get_leaders():
 ##
 ##        #conn = pymongo.MongoClient()
 ##        #db = conn.lasthitchallengedb
-##        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+##        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 ##        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 ##
 ##        for elem in data:
@@ -211,7 +211,7 @@ def get_leaders():
 #    #heroid = request.args.get('heroid')
 #
 #    if key == '17354443':
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
@@ -258,7 +258,7 @@ def add_records():
 
             #conn = pymongo.MongoClient()
             #db = conn.lasthitchallengedb
-            conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+            conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
             db = conn[os.environ['OPENSHIFT_APP_NAME']]
 
             #local time_list = {"150", "300", "450", "600"}
@@ -304,7 +304,7 @@ def add_records():
                     db.records.update( { 'steam_id' : steam_id, 'hero' : int(elem['hero']), 'time' : int(elem['time']), 'leveling' : elem['leveling'], 'typescore' : elem['typescore'], 'value': { "$lte" : int(elem['value']) }},
                             { "$set" : { 'value' : int(elem['value']) }}, upsert = True);
                 else:
-                    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+                    conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
                     db = conn[os.environ['OPENSHIFT_APP_NAME']]
                     rec = db.cheaters.find_one({'steam_id' : steam_id})
                     if rec == None:
@@ -328,7 +328,7 @@ def add_records():
 #    if key == '17354443':
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        db.records.insert({ 'steam_id' : steam_id, 'hero' : int(hero), 'time' : int(time), 'leveling' : leveling, 'typescore' : typescore, 'value': int(value)})
 #        return jsonify({'data' : 'data inserted'})
@@ -346,7 +346,7 @@ def add_cheater():
         if api_key == api:
             #conn = pymongo.MongoClient()
             #db = conn.lasthitchallengedb
-            conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+            conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
             db = conn[os.environ['OPENSHIFT_APP_NAME']]
             rec = db.cheaters.find_one({'steam_id' : steam_id})
             if rec == None:
@@ -361,7 +361,7 @@ def add_cheater():
 #    print 'DEL CHEATERS'
 #    #conn = pymongo.MongoClient()
 #    #db = conn.lasthitchallengedb
-#    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#    conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #    db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #    db.cheaters.remove({})
 #    return jsonify({'data' : 'data cleared'})
@@ -374,7 +374,7 @@ def add_cheater():
 #    if key == '17354443':
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        db.records.remove({"steam_id" : steam_id})
 #        return jsonify({'data' : 'data cleared'})
@@ -392,7 +392,7 @@ def add_cheater():
 #    if key == '17354443':
 #        #conn = pymongo.MongoClient()
 #        #db = conn.lasthitchallengedb
-#        conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+#        conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
 #        db = conn[os.environ['OPENSHIFT_APP_NAME']]
 #        db.records.update_many({'hero':int(hero_from)},{"$set":{'hero':int(hero_to)}})
 #        return jsonify({'data' : 'data swapped'})
@@ -402,7 +402,7 @@ def add_cheater():
 @application.route('/cheaters', methods = ['GET'])
 def get_cheaters():
     print('GET CHEATERS')
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    conn = pymongo.MongoClient(os.environ['MONGODB_DATABASE'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
     #conn = pymongo.MongoClient()
     #db = conn.lasthitchallengedb
