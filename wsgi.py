@@ -11,18 +11,16 @@ import math
 #import time
 
 #from flask import Flask
-#application = Flask(__name__)
+application = Flask(__name__)
 
-
-app = Flask(__name__, static_url_path = "")
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+application.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 auth = HTTPBasicAuth()
 
 api = '2E2B10BDCEBB162D71C2A98934465B867EFDBC7423302956A80064771DE05B36'
 creeps_per_wave = 5
 siege_creep_interval = 300
 
-@app.route("/")
+@application.route("/")
 def hello():
     return "Hello World!"
 
@@ -37,11 +35,11 @@ def unauthorized():
     return make_response(jsonify( { 'error': 'Unauthorized access' } ), 403)
     # return 403 instead of 401 to prevent browsers from displaying the default auth dialog
     
-@app.errorhandler(400)
+@application.errorhandler(400)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Bad request' } ), 400)
 
-@app.errorhandler(404)
+@application.errorhandler(404)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
@@ -89,7 +87,7 @@ records = [
 #        time.sleep(1)
 
 
-@app.route('/records', methods = ['GET'])
+@application.route('/records', methods = ['GET'])
 def get_records():
     print('GET RECORDS')
     #get the request parameters
@@ -125,7 +123,7 @@ def get_records():
     else:
         return jsonify({'data' : 'nothing to see here'})
 
-#@app.route('/allrecords', methods = ['GET'])
+#@application.route('/allrecords', methods = ['GET'])
 #def all_records():
 #    print 'ALL RECORDS'
 #    key = request.args.get('key')
@@ -148,7 +146,7 @@ def get_records():
 #    else:
 #        return jsonify({'data' : 'nothing to see here'})
 
-@app.route('/leaderboard', methods = ['GET'])
+@application.route('/leaderboard', methods = ['GET'])
 def get_leaders():
     print('LEADERBOARD')
     steam_id = request.args.get('steam_id')
@@ -174,7 +172,7 @@ def get_leaders():
     else:
         return jsonify({'data' : 'nothing to see here'})
 
-#@app.route('/clear', methods = ['GET'])
+#@application.route('/clear', methods = ['GET'])
 #def clear_records():
 #    print 'CLEAR'
 #    key = request.args.get('key')
@@ -194,7 +192,7 @@ def get_leaders():
 
 #coll.update(key, data, {upsert:true});
 
-##@app.route('/records', methods = ['POST'])
+##@application.route('/records', methods = ['POST'])
 ##def add_records():
 ##    print 'ADD RECORDS'
 ##    if request.form:
@@ -223,7 +221,7 @@ def get_leaders():
 ##            db.records.insert(new_records)
 ##        return jsonify({'data' : 'OK'}), 201
 
-#@app.route('/clearduplicates', methods = ['GET'])
+#@application.route('/clearduplicates', methods = ['GET'])
 #def clear_duplicates():
 #    print 'CLEAR DUPLICATES'
 #    key = request.args.get('key')
@@ -264,7 +262,7 @@ def get_leaders():
 #    else:
 #        return jsonify({'data' : 'nothing to see here'})
 
-@app.route('/records', methods = ['POST'])
+@application.route('/records', methods = ['POST'])
 def add_records():
     print('ADD RECORDS')
     if request.form:
@@ -334,7 +332,7 @@ def add_records():
     else: 
         return jsonify({'data' : 'nothing to see here'}), 403
 #        
-#@app.route('/addrecord', methods = ['GET'])
+#@application.route('/addrecord', methods = ['GET'])
 #def add_record():
 #    print 'ADD RECORD'
 #    steam_id = request.args.get('steam_id')
@@ -354,7 +352,7 @@ def add_records():
 #    else:
 #        return jsonify({'data' : 'nothing to see here'})
 #
-@app.route('/cheaters', methods = ['POST'])
+@application.route('/cheaters', methods = ['POST'])
 def add_cheater():
     print('ADD CHEATERS')
     if request.form:
@@ -375,7 +373,7 @@ def add_cheater():
         else:
             return jsonify({'data' : 'nothing to see here'})
 
-#@app.route('/delcheaters', methods = ['GET'])
+#@application.route('/delcheaters', methods = ['GET'])
 #def del_cheater():
 #    print 'DEL CHEATERS'
 #    #conn = pymongo.MongoClient()
@@ -385,7 +383,7 @@ def add_cheater():
 #    db.cheaters.remove({})
 #    return jsonify({'data' : 'data cleared'})
 
-#@app.route('/delrecord', methods = ['GET'])
+#@application.route('/delrecord', methods = ['GET'])
 #def del_cheater():
 #    print 'DEL RECORDS'
 #    steam_id = request.args.get('steam_id')
@@ -400,7 +398,7 @@ def add_cheater():
 #    else:
 #        return jsonify({'data' : 'nothing to see here'})
 
-#@app.route('/swaprecords', methods = ['GET'])
+#@application.route('/swaprecords', methods = ['GET'])
 #def swap_records():
 #    print 'SWAP RECORDS'
 #    hero_from = request.args.get('hero_from')
@@ -418,7 +416,7 @@ def add_cheater():
 #    else:
 #        return jsonify({'data' : 'nothing to see here'})
 
-@app.route('/cheaters', methods = ['GET'])
+@application.route('/cheaters', methods = ['GET'])
 def get_cheaters():
     print('GET CHEATERS')
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
@@ -433,4 +431,4 @@ def get_cheaters():
     return jsonify({'data' : {'data' : steam_id_cheaters}})
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    application.run(debug = True)
