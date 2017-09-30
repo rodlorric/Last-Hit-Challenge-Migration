@@ -83,7 +83,7 @@ records = [
 
 @app.route('/records', methods = ['GET'])
 def get_records():
-    print 'GET RECORDS'
+    print('GET RECORDS')
     #get the request parameters
     steam_id = request.args.get('steam_id')
     api_key = request.args.get('api_key')    
@@ -142,7 +142,7 @@ def get_records():
 
 @app.route('/leaderboard', methods = ['GET'])
 def get_leaders():
-    print 'LEADERBOARD'
+    print('LEADERBOARD')
     steam_id = request.args.get('steam_id')
     api_key = request.args.get('api_key')
     hero = request.args.get('hero')
@@ -258,7 +258,7 @@ def get_leaders():
 
 @app.route('/records', methods = ['POST'])
 def add_records():
-    print 'ADD RECORDS'
+    print('ADD RECORDS')
     if request.form:
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
@@ -348,7 +348,7 @@ def add_records():
 #
 @app.route('/cheaters', methods = ['POST'])
 def add_cheater():
-    print 'ADD CHEATERS'
+    print('ADD CHEATERS')
     if request.form:
         result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         steam_id = result.get('steam_id')
@@ -412,7 +412,7 @@ def add_cheater():
 
 @app.route('/cheaters', methods = ['GET'])
 def get_cheaters():
-    print 'GET CHEATERS'
+    print('GET CHEATERS')
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn[os.environ['OPENSHIFT_APP_NAME']]
     #conn = pymongo.MongoClient()
