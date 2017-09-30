@@ -13,9 +13,6 @@ import math
 #from flask import Flask
 #application = Flask(__name__)
 
-@application.route("/")
-def hello():
-    return "Hello World!"
 
 app = Flask(__name__, static_url_path = "")
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
@@ -24,6 +21,10 @@ auth = HTTPBasicAuth()
 api = '2E2B10BDCEBB162D71C2A98934465B867EFDBC7423302956A80064771DE05B36'
 creeps_per_wave = 5
 siege_creep_interval = 300
+
+@app.route("/")
+def hello():
+    return "Hello World!"
 
 @auth.get_password
 def get_password(username):
