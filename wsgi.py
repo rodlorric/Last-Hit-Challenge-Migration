@@ -1,6 +1,4 @@
-#!flask/bin/python
 from flask import Flask, jsonify, abort, request, make_response, url_for
-from flask.ext.httpauth import HTTPBasicAuth
 import pymongo
 import json
 import os
@@ -14,7 +12,6 @@ import math
 application = Flask(__name__)
 
 application.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
-auth = HTTPBasicAuth()
 
 api = '2E2B10BDCEBB162D71C2A98934465B867EFDBC7423302956A80064771DE05B36'
 creeps_per_wave = 5
@@ -24,17 +21,6 @@ siege_creep_interval = 300
 def hello():
     return "Hello World!"
 
-@auth.get_password
-def get_password(username):
-    if username == 'miguel':
-        return 'python'
-    return None
-
-@auth.error_handler
-def unauthorized():
-    return make_response(jsonify( { 'error': 'Unauthorized access' } ), 403)
-    # return 403 instead of 401 to prevent browsers from displaying the default auth dialog
-    
 @application.errorhandler(400)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Bad request' } ), 400)
